@@ -1,0 +1,1 @@
+ALTER TABLE `Product` CHANGE id id INT NOT NULL

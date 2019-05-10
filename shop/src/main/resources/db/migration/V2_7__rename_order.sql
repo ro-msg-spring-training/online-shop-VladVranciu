@@ -1,0 +1,1 @@
+alter table `Order` rename to `Order_table`;
