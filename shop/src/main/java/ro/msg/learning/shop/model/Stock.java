@@ -28,4 +28,11 @@ public class Stock {
                 ", quantity=" + quantity +
                 '}';
     }
+
+    public Stock(Integer id, Product product, Location location, Integer quantity) {
+        this.id = id;
+        this.product = product;
+        this.location = location;
+        this.quantity = quantity;
+    }
 }

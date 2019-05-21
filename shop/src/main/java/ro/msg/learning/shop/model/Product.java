@@ -26,11 +26,11 @@ public class Product {
     private BigDecimal price;
     private Double weight;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "idcategory", referencedColumnName = "id")
     private ProductCategory productCategory;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "idsupplier", referencedColumnName = "id")
     private Supplier supplier;
 
@@ -58,5 +58,24 @@ public class Product {
                 ", imgUrl='" + imgUrl + '\'' +
                 ", orderDetails=" + orderDetails +
                 '}';
+    }
+
+    public Product(String name, String description, BigDecimal price, Double weight, ProductCategory productCategory, Supplier supplier) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.weight = weight;
+        this.productCategory = productCategory;
+        this.supplier = supplier;
+    }
+
+    public Product(Integer id, String name, String description, BigDecimal price, Double weight, ProductCategory productCategory, Supplier supplier) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.weight = weight;
+        this.productCategory = productCategory;
+        this.supplier = supplier;
     }
 }

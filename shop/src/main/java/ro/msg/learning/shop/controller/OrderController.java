@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ro.msg.learning.shop.exception.OrderCannotBeCompletedException;
 import ro.msg.learning.shop.model.DTO.OrderInputObject;
+import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.Order;
+import ro.msg.learning.shop.repository.LocationRepository;
+import ro.msg.learning.shop.repository.ProductRepository;
+import ro.msg.learning.shop.repository.StockRepository;
 import ro.msg.learning.shop.service.OrderService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -19,18 +25,21 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private StockRepository stockRepository;
 
     @PostMapping("/orders")
     ResponseEntity<?> save(@RequestBody OrderInputObject orderInputObject)throws OrderCannotBeCompletedException{
-        if(orderService.createOrder(orderInputObject).isEmpty())
+        Order order=orderService.createOrder(orderInputObject);
+        if(order==null)
            throw new OrderCannotBeCompletedException();
         else
-            return new ResponseEntity<>(orderInputObject,null, HttpStatus.OK);
+            return new ResponseEntity<>(order,null, HttpStatus.OK);
 
     }
 
-    @GetMapping("/orders")
-    List<Order> orderList(){
-        return orderService.findAll();
+    @GetMapping("/stocks")
+    ResponseEntity<?> getStocks(){
+        return new ResponseEntity<>(stockRepository.findAll(),null,HttpStatus.OK);
     }
 }

@@ -26,6 +26,21 @@ public class Address {
     private String streetAddress;
 
 
+    public Address(String country, String city, String county, String streetAddress) {
+        this.country = country;
+        this.city = city;
+        this.county = county;
+        this.streetAddress = streetAddress;
+    }
+
+    public Address(Integer id, String country, String city, String county, String streetAddress) {
+        this.id = id;
+        this.country = country;
+        this.city = city;
+        this.county = county;
+        this.streetAddress = streetAddress;
+    }
+
     @OneToOne(mappedBy = "address",orphanRemoval=true,cascade = CascadeType.ALL)
     @JsonIgnore
     private Location location;

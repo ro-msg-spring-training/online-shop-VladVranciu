@@ -19,7 +19,7 @@ public class OrderDetail {
     @JoinColumn(name="idorder",referencedColumnName= "id")
     @JsonIgnore
     private Order order;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinColumn(name="idproduct",referencedColumnName = "id")
     private Product product;
     private Integer quantity;

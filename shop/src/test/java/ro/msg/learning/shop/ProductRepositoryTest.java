@@ -13,7 +13,7 @@ import ro.msg.learning.shop.repository.SupplierRepository;
 
 import java.math.BigDecimal;
 
-@Transactional
+
 public class ProductRepositoryTest {
 
     @Autowired

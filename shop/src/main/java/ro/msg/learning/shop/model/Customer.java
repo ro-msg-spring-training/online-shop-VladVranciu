@@ -39,4 +39,13 @@ public class Customer {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public Customer(Integer id, String firstName, String lastName, String username, String password, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }

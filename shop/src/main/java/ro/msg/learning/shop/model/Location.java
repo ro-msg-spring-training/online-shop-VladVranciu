@@ -52,19 +52,5 @@ public class Location {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
-        return Objects.equals(id, location.id) &&
-                Objects.equals(name, location.name) &&
-                Objects.equals(address, location.address);
 
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, address, stocks, revenues, orders);
-    }
 }
