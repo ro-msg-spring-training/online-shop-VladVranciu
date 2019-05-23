@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.exception.OrderCannotBeCompletedException;
+import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.model.DTO.OrderInputObject;
 import ro.msg.learning.shop.repository.*;
@@ -28,10 +29,12 @@ public class SingleLocationStrategy implements Strategy {
         return StrategyEnum.SINGLELOCATION;
     }
 
-    public List<OrderToCompute> compute(OrderInputObject orderInputObject) throws OrderCannotBeCompletedException {
+    public List<OrderToCompute> compute(OrderInputObject orderInputObject) throws OrderCannotBeCompletedException,ProductNotFoundException {
         List<OrderToCompute> orderToComputes = new ArrayList<>();
         List<Location> allLocations = new ArrayList<>();
         orderInputObject.getProducts().stream().peek(p -> {
+            if(!productRepository.findById(p.getProductId()).isPresent())
+                throw new ProductNotFoundException(p.getProductId());
             List<Location> aux = locationRepository.findSingleLocation(p.getQuantity(), productRepository.findById(p.getProductId()).get());
             if (aux == null || aux.isEmpty())
                 allLocations.addAll(new ArrayList<>());

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.config.StrategyConfiguration;
 import ro.msg.learning.shop.exception.OrderCannotBeCompletedException;
+import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.model.DTO.OrderInputObject;
 import ro.msg.learning.shop.repository.*;
@@ -50,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Order createOrder(OrderInputObject orderInputObject) throws OrderCannotBeCompletedException {
+    public Order createOrder(OrderInputObject orderInputObject) throws OrderCannotBeCompletedException, ProductNotFoundException {
         List<OrderToCompute> list = strategy.compute(orderInputObject);
         Order order = new Order();
         switch (strategy.getStrategy()) {

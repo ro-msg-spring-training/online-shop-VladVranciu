@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.config;
+package ro.msg.learning.shop.config.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;

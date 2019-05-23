@@ -19,6 +19,7 @@ import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.model.DTO.OrderInputObject;
 import ro.msg.learning.shop.repository.*;
 import ro.msg.learning.shop.service.OrderService;
+import ro.msg.learning.shop.service.strategy.Strategy;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -44,11 +45,17 @@ public class CreateNewOrderIntegrationTest {
     @Rule
     public ExpectedException expectedException= ExpectedException.none();
 
+    @Autowired
+    Strategy strategy;
+
     @Test
     public void createNewOrderSuccessfully() throws OrderCannotBeCompletedException {
         List<ProductInputObject> productList = new ArrayList<>();
         productList.add(new ProductInputObject(1, 1));
         OrderInputObject orderInputObject = new OrderInputObject(LocalDateTime.now(), new Address("Romania", "Iasi", "Iasi", "address1"), productList);
+
+        Assert.assertEquals(strategy.compute(orderInputObject).size(),1);
+
         Assert.assertNotNull(orderService.createOrder(orderInputObject));
     }
 
@@ -58,51 +65,9 @@ public class CreateNewOrderIntegrationTest {
         List<ProductInputObject> productList = new ArrayList<>();
         productList.add(new ProductInputObject(1, 4000));
         OrderInputObject orderInputObject = new OrderInputObject(LocalDateTime.now(), new Address("Romania", "Iasi", "Iasi", "address1"), productList);
+
+        strategy.compute(orderInputObject);
+
         orderService.createOrder(orderInputObject);
     }
-
-
-
-
-
-
-
-
-
-
-//    @Test
-//    public void test1(){
-//        Location loc1 = new Location(1, "location1", new Address(1,"la", "la", "la", "la"));
-//        Address address= new Address(2,"la2", "la2", "la2", "la2");
-//
-//        Customer customer=new Customer(1,"lasname","firstname","username","password","mail@mail.com");
-//
-//        ProductCategory productCategory=new ProductCategory(1,"papuci","smc");
-//        Supplier supplier=new Supplier(1,"Supplier1");
-//        Product product1=new Product(1,"Vans","for feet",new BigDecimal(150),50d,productCategory,supplier);
-//
-//        OrderDetail orderDetail=new OrderDetail();
-//        orderDetail.setProduct(product1);
-//        orderDetail.setQuantity(44);
-//        orderDetail.setId(1);
-//
-//
-//        Order order=new Order();
-//        order.setId(1);
-//        order.setShippedFrom(loc1);
-//        order.setShippedTo(address);
-//        order.setCustomer(customer);
-//        order.setCreatedAt(LocalDateTime.now());
-//
-//        orderDetail.setOrder(order);
-//
-//        order.setOrderDetails(Arrays.asList(orderDetail));
-//
-//        orderRepository.save(order);
-//
-//        Assert.assertEquals(orderRepository.findById(1).get().getId(),order.getId());
-//        Assert.assertEquals(orderRepository.findById(1).get().getCreatedAt(),order.getCreatedAt());
-//        Assert.assertEquals(orderRepository.findById(1).get().getShippedTo(),order.getShippedTo());
-//
-//    }
 }

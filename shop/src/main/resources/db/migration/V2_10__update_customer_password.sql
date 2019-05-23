@@ -1,0 +1,1 @@
+update customer set password='$2a$10$zIWNvNUiIkVlc3ZWpmbENupt.iYdbaegNLCgxNFKmziao5kI68vu.' where id=1

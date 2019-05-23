@@ -1,7 +1,6 @@
-package ro.msg.learning.shop.config;
+package ro.msg.learning.shop.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -11,9 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import javax.servlet.Filter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 
 @Configuration
 @EnableWebSecurity
@@ -22,12 +19,11 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Autowired
     private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
-
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("123"))
-                .authorities("ROLE_USER");
+        auth.authenticationProvider(authProvider);
     }
 
     @Override
@@ -36,14 +32,12 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .antMatchers("/securityNone").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .csrf().disable()
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint);
+
 
         //http.addFilterAfter((Filter) new SecurityProperties.Filter(),BasicAuthenticationFilter.class);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
