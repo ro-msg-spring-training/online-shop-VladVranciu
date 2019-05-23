@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ro.msg.learning.shop.exception.OrderCannotBeCompletedException;
+import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.model.DTO.OrderInputObject;
 import ro.msg.learning.shop.repository.*;
@@ -64,6 +65,18 @@ public class CreateNewOrderIntegrationTest {
         expectedException.expect(OrderCannotBeCompletedException.class);
         List<ProductInputObject> productList = new ArrayList<>();
         productList.add(new ProductInputObject(1, 4000));
+        OrderInputObject orderInputObject = new OrderInputObject(LocalDateTime.now(), new Address("Romania", "Iasi", "Iasi", "address1"), productList);
+
+        strategy.compute(orderInputObject);
+
+        orderService.createOrder(orderInputObject);
+    }
+
+    @Test
+    public void failToCreateNewOrderDueToLackOfProduct() throws ProductNotFoundException, OrderCannotBeCompletedException {
+        expectedException.expect(ProductNotFoundException.class);
+        List<ProductInputObject> productList = new ArrayList<>();
+        productList.add(new ProductInputObject(44, 2));
         OrderInputObject orderInputObject = new OrderInputObject(LocalDateTime.now(), new Address("Romania", "Iasi", "Iasi", "address1"), productList);
 
         strategy.compute(orderInputObject);
